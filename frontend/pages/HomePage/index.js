@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Button } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+import { Navbar } from '../../components';
 
 class HomePage extends Component {
 	render() {
-		const { textStyle } = styles;
 		return (
 			<View>
-				<Text style={textStyle}>
-					
-				</Text>
+				<Navbar title='Home' />
+				<Button 
+					title='Go To Chat' 
+					onPress={() => Actions.chat()}
+				/>
 			</View>
 		);
 	}
 }
-
-const styles = {
-	textStyle: {
-		margin: 100
-	}
-};
 
 export default HomePage;
