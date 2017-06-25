@@ -54,7 +54,6 @@ class ChatPage extends Component {
 	}
 
 	render() {
-		console.log(this.props.chat);
 		return (
 			<GiftedChat
 				messages={this.state.messages}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Actions } from 'react-native-router-flux';
 import { View } from 'react-native';
 import { Navbar, Form } from '../../components';
 
@@ -20,7 +21,7 @@ class CreatePage extends Component {
 			title: 'Create Chat',
 			backgroundColor: '#39AEF8',
 			onPress: (value) => {
-				console.log('Create Chat', value);
+				Actions.home();
 			}
 		}];
 		return (
