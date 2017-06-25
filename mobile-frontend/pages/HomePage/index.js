@@ -11,11 +11,13 @@ class HomePage extends Component {
 			title: 'Log In',
 			backgroundColor: '#39AEF8',
 			onPress: (value) => {
+				console.log('Log In', value);
 			}
 		}, {
 			title: 'Sign In',
 			backgroundColor: '#00C853',
 			onPress: (value) => {
+				console.log('Sign In', value);
 			}
 		}];
 

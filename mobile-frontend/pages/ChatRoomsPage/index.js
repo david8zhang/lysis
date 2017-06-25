@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React, { Component } from 'react';
-import { Navbar } from '../../components';
 import { ScrollView, Image, View, Text } from 'react-native';
 import { Tabs, Tab, Icon } from 'react-native-elements';
+import { Navbar } from '../../components';
+
 
 class ChatRoomsPage extends Component {
-
     renderRooms() {
         rooms = [{
                 key: 0,
@@ -18,10 +19,12 @@ class ChatRoomsPage extends Component {
             }];
 
         const { roomViewStyle } = styles;
-        return rooms.map((room) => {
+        return rooms.map((room, index) => {
             const { key, img,  description} = room;
             return (
-                <View style={roomViewStyle}
+                <View 
+                    style={roomViewStyle}
+                    key={index}
                     onClick={() => console.log("fuck this shit")}>
                     <Image
                         style={{width:64, height:64}}
@@ -63,3 +66,4 @@ const styles = {
 }
 
 export default ChatRoomsPage;
+/* eslint-enable */
