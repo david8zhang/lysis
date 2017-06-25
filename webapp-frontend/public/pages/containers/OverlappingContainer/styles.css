@@ -1,0 +1,50 @@
+.overlap {
+	padding: 100px 25px 25px 25px;
+}
+
+.overlap h2 {
+	padding: 0px;
+	font-size: 15px;
+	font-weight: 700;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+.potOverlap {
+	padding: 50px;
+}
+
+
+@media (min-width: 1450px) {
+	.potOverlap {
+		padding: 50px 100px 100px 100px;
+	}
+	.overlap {
+		padding: 25px;
+	}
+
+	.overlap h2 {
+		padding: 0px;
+		font-size: 20px;
+		font-weight: 700;
+		padding-bottom: 20px;
+		text-align: center;
+	}
+}
+
+@media (min-width: 1500px) {
+	.potOverlap {
+		padding: 30px 150px 150px 150px;
+	}
+	.overlap {
+		padding: 25px;
+	}
+
+	.overlap h2 {
+		padding: 0px;
+		font-size: 20px;
+		font-weight: 700;
+		padding-bottom: 20px;
+		text-align: center;
+	}	
+}

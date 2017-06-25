@@ -1,0 +1,43 @@
+.timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 100%;
+}
+
+.node {
+  flex-direction: column;
+  border-radius: 50%;
+  width: 125px;
+  height: 125px;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  display: inline-flex;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  -moz-transition: background-color 0.3s, color 0.3s;
+  -o-transition: background-color 0.3s, color 0.3s;
+}
+
+.node p {
+  font-weight: 400;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+
+.edge {
+  display: flex;
+  height: 10px;
+  background-color: white;
+}
+
+.active {
+  background-color: #1BBC9B;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
+  -moz-transition: background-color 0.3s, color 0.3s;
+  -o-transition: background-color 0.3s, color 0.3s;
+}

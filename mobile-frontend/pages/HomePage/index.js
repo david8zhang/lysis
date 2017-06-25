@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Navbar, Form } from '../../components';
 
@@ -21,13 +21,32 @@ class HomePage extends Component {
 			}
 		}];
 
+		const { imageStyle, imageWrapperStyle } = styles;
+
 		return (
 			<View>
 				<Navbar title='Home' />
+				<View style={imageWrapperStyle}>
+					<Image
+						style={imageStyle}
+						source={require('../../images/logo.png')}
+					/>
+				</View>
 				<Form handlers={handlers} />
 			</View>
 		);
 	}
 }
+
+const styles = {
+	imageStyle: {
+		height: 300,
+		width: 300,
+		resizeMode: 'contain',
+	},
+	imageWrapperStyle: {
+		alignItems: 'center'
+	}
+};
 
 export default HomePage;

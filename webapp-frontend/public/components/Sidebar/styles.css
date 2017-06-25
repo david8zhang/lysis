@@ -1,0 +1,53 @@
+.sidebar {
+	height: 100%;
+	position: fixed;
+	width: 400px;
+	top: 0;
+	left: 0;
+	background-color: #2C3456;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+	transition: 0.5s;
+}
+
+.sidebarOptions {
+	background-color: #2C3456;
+	flex: 0.1;
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
+
+.sidebarItem {
+	color: white;
+	padding: 20px;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: background-color 0.2s
+}
+
+.sidebarItem:hover {
+	color: white;
+	background-color: #1BBC9B;
+	transition: background-color 0.2s;
+}
+
+.sidebarIcon {
+	color: white;
+	font-size: 30px;
+	cursor: pointer;
+	color: rgba(255, 255, 255, 0.5);
+	transition: color 0.3s;
+}
+
+.sidebarIcon:hover {
+	color: rgba(255, 255, 255, 1);
+	transition: color 0.3s;
+}
+
+.sidebarItem img {
+	margin-left: 10px;
+	margin-right: 10px;
+	width: 25px;
+	height: 25px;
+}

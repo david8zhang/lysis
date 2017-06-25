@@ -60,10 +60,11 @@ function renderFullPage(html, initialState) {
 				<link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet">
 				<link rel="stylesheet" href="/static/css/skeleton.css"/>
 				<link rel="stylesheet" href="/static/css/normalize.css"/>
+				<link rel="stylesheet" href="/static/circular-progress.css"/>
 				<link rel="stylesheet" href="/static/style.css"/>
 			</head>
 			<body>
-				<div class="container">${html}</div>
+				<div id="container">${html}</div>
 				<script>window.$REDUX_STATE=${initialState}</script>
 				<script src="/static/bundle.js"></script>
 			</body>

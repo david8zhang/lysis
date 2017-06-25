@@ -1,0 +1,23 @@
+.form {
+	width: 387px;
+	border-radius: 5px;
+	background-color: rgba(62, 62, 88, 0.65);
+	box-shadow: 3px 3px 10px black;
+	padding: 10px;
+}
+
+.formHeader {
+	font-size: 18px;
+	color: white;
+	padding: 10px;
+	font-weight: 200;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+}
+
+.fullWidth {
+	width: 100%;
+	border-radius: 5px;
+	background-color: rgba(62, 62, 88, 0.65);
+	box-shadow: 3px 3px 10px black;
+	padding: 10px;	
+}

@@ -1,0 +1,18 @@
+.search {
+	border-width: 2px;
+	border-style: solid;
+	border-color: white;
+	border-radius: 20px;
+	background-color: #505176;
+	display: inline-flex;
+	align-self: center;
+	width: 80%;
+}
+
+.search i {
+	font-size: 21px;
+	color: white;
+	padding: 5px;
+	padding-left: 10px;
+	padding-top: 3px;
+}

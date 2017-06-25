@@ -1,0 +1,89 @@
+.profileHeader {
+	font-size: 15px;
+	display: flex;
+	justify-content: flex-end;
+	flex: 1 1 100%;
+	margin-right: 20px;
+}
+
+.profileHeader p {
+	margin-bottom: 0px;
+	text-align: center;
+	font-size: 15px;
+	font-weight: 700;
+	color: #818181;
+}
+
+@media (min-width: 1400px) {
+	.profileHeader {
+		margin-right: 35px;
+	}
+}
+
+.profileList {
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+}
+
+.profileList h2 {
+	padding-bottom: 10px;
+}
+
+.profileItem {
+	flex: 1 1 100%;
+	display: flex;
+	align-items: center;
+	vertical-align: middle;
+	flex-flow: row wrap;
+	padding: 20px;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+.profileItem hr {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-style: solid;
+	border-color: #222222;
+	border-width: 100%;
+}
+
+.profileInfo {
+	flex-grow: 2;
+	display: flex;
+	align-items: center;
+}
+
+.profileInfo img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.profileInfo p {
+	margin-bottom: 0px;
+	font-size: 15px;
+	font-weight: 500;
+	padding-left: 10px;
+}
+
+@media (min-width: 1400px) {
+	.profileInfo p {
+		margin-bottom: 0px;
+		font-size: 20px;
+		font-weight: 500;
+		padding-left: 10px;
+	}
+}
+
+.profileVids p {
+	color: #818181;
+	margin-bottom: 0px;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.profileVids {
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+}

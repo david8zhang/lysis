@@ -1,0 +1,51 @@
+.hero {
+	min-height: 686px;
+	padding: 80px;
+}
+
+.info {
+	min-height: 200px;
+	padding: 80px;
+	font-weight: 200;
+	font-size: 20px;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+}
+
+.about {
+	min-height: 700px;
+	padding: 80px;
+	font-weight: 200;
+	font-size: 20px;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+	font-weight: 200;
+}
+
+.works {
+	min-height: 350px;
+	padding: 80px;
+	font-weight: 200;
+	font-size: 20px;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+}
+
+.strip {
+	min-height: 405px;
+	padding: 80px;
+	padding-top: 165px;
+	font-size: 22px;
+	font-family: 'Avenir', 'Nunito Sans', sans-serif;
+	font-weight: 200;
+}
+
+.strip h2 {
+	font-size: 35px;
+	font-weight: 500;
+}
+
+.action {
+	min-height: 293;
+	padding-left: 25%;
+	padding-right: 25%;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
