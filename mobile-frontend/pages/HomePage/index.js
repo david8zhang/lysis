@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { Navbar, Form } from '../../components';
-
 
 class HomePage extends Component {
 	render() {
@@ -11,32 +9,22 @@ class HomePage extends Component {
 			title: 'Log In',
 			backgroundColor: '#39AEF8',
 			onPress: (value) => {
-				console.log('Log In', value);
+				console.log('Value', value);
+				Actions.chatRooms();
 			}
 		}, {
 			title: 'Sign In',
 			backgroundColor: '#00C853',
 			onPress: (value) => {
-				console.log('Sign In', value);
+				console.log('Value', value);
+				Actions.chatRooms();
 			}
 		}];
 
 		return (
 			<View>
 				<Navbar title='Home' />
-				<Button
-					title='Go To Chat'
-					onPress={() => Actions.chat()}
-				/>
-				<Button
-					title='Go To Chat Rooms Page'
-					onPress={() => Actions.chatRooms()}
-				/>
-				<Button
-					title='Create new chat'
-					onPress={() => Actions.new()}
-				/>
-				<Form handler={handlers} />
+				<Form handlers={handlers} />
 			</View>
 		);
 	}

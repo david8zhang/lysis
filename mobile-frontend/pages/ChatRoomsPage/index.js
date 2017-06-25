@@ -1,43 +1,52 @@
 /* eslint-disable */
 import React, { Component } from 'react';
-import { ScrollView, Image, View, Text } from 'react-native';
-import { Tabs, Tab, Icon } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
+import { ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
+import { Tabs, Tab, Icon, Button } from 'react-native-elements';
 import { Navbar } from '../../components';
-
 
 class ChatRoomsPage extends Component {
     renderRooms() {
         rooms = [{
                 key: 0,
-                img: 'http://i1.kym-cdn.com/entries/icons/facebook/000/019/301/0dc.jpg',
-                description: 'I will destroy ISIS'
+                img: 'https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png',
+                description: 'Chat Room 1',
+                active: '3 People Active'
             }, {
                 key: 1,
-                img: 'http://i3.kym-cdn.com/photos/images/original/001/045/025/a90.png',
-                description: 'We have a Linda'
-
+                img: 'https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png',
+                description: 'Chat Room 2',
+                active: '3 People Active'
             }];
 
-        const { roomViewStyle } = styles;
+        const { roomViewStyle, descriptionStyle, activeStyle } = styles;
         return rooms.map((room, index) => {
-            const { key, img,  description} = room;
+            const { key, img,  description, active} = room;
             return (
-                <View 
-                    style={roomViewStyle}
-                    key={index}
-                    onClick={() => console.log("fuck this shit")}>
-                    <Image
-                        style={{width:64, height:64}}
-                        source={{uri:img}}
+                <TouchableOpacity onPress={() => Actions.chat()} key={index}>
+                    <View 
+                        style={roomViewStyle}
+                    >
+                        <Image
+                            style={{ width:64, height:64 }}
+                            source={{ uri:img }}
                         />
-                    <View style={{
-                            alignItems:'flex-start',
-                            padding:16,
-                            justifyContent:'center'
-                        }}>
-                        <Text>{description}</Text>
+                        
+                            <View style={{
+                                alignItems:'flex-start',
+                                padding:16,
+                                justifyContent:'center'
+                            }}>
+                                <Text style={descriptionStyle}>
+                                    {description}
+                                </Text>
+                                <Text style={activeStyle}>
+                                    {active}
+                                </Text>
+                            </View>
                     </View>
-                </View>
+                </TouchableOpacity>
+
             );
         });
     }
@@ -48,6 +57,10 @@ class ChatRoomsPage extends Component {
                 <Navbar title='Chat Rooms' />
                 <ScrollView>
                     {this.renderRooms()}
+                    <Button 
+                        onPress={() => Actions.new()}
+                        title='Create New Room'
+                    />
                 </ScrollView>
             </View>
         );
@@ -62,6 +75,12 @@ const styles = {
         flex:1,
         flexDirection:'row',
         justifyContent:'flex-start'
+    },
+    descriptionStyle: {
+        fontSize: 20
+    },
+    activeStyle: {
+        fontSize: 10
     }
 }
 
