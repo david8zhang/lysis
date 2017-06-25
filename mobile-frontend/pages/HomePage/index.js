@@ -30,7 +30,11 @@ class HomePage extends Component {
 					title='Go To Chat Rooms Page'
 					onPress={() => Actions.chatRooms()}
 				/>
-			<Form handler={handlers}/>
+				<Button
+					title='Create new chat'
+					onPress={() => Actions.new()}
+				/>
+				<Form handler={handlers} />
 			</View>
 		);
 	}

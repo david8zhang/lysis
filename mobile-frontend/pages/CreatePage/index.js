@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Navbar } from '../../components';
 
-class ChatPage extends Component {
+class CreatePage extends Component {
 	render() {
 		return (
 			<View>
-				<Navbar title='Chat Room' />
+				<Navbar title='Create New Chat' />
 			</View>
 		);
 	}
 }
 
-export default ChatPage;
+export default CreatePage;
