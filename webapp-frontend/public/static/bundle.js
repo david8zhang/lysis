@@ -69,7 +69,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(295);
+	var _store = __webpack_require__(284);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29667,15 +29667,6 @@
 	  }
 	});
 
-	var _DashPage = __webpack_require__(294);
-
-	Object.defineProperty(exports, 'DashPage', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_DashPage).default;
-	  }
-	});
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
@@ -29694,7 +29685,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(217);
+	var _reactRedux = __webpack_require__(185);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29714,8 +29705,41 @@
 		}
 
 		_createClass(IndexPage, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _props$chat = this.props.chat,
+				    subscription = _props$chat.subscription,
+				    rtm = _props$chat.rtm;
+
+				/* publish a message after being subscribed to sync on subscription */
+
+				subscription.on('enter-subscribed', function () {
+					console.log('Joined the channel!');
+				});
+
+				/* set callback for PDU with specific action */
+				subscription.on('rtm/subscription/data', function (pdu) {
+					pdu.body.messages.forEach(function (msg) {
+						console.log(msg);
+					});
+				});
+				rtm.start();
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				var _props$chat2 = this.props.chat,
+				    subscription = _props$chat2.subscription,
+				    rtm = _props$chat2.rtm;
+
+				rtm.unsubscribe(subscription.subscriptionId);
+				rtm.stop();
+				console.log('Unmounting component!');
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				console.log('Message', this.props.message);
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -29726,11 +29750,6 @@
 							'h1',
 							null,
 							'Home Page'
-						),
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'dash' },
-							'Go to Dash'
 						)
 					)
 				);
@@ -29740,19 +29759,137 @@
 		return IndexPage;
 	}(_react.Component);
 
-	exports.default = IndexPage;
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			chat: state.chat,
+			message: state.message
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, actions)(IndexPage);
 
 /***/ }),
-/* 281 */
+/* 281 */,
+/* 282 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+/***/ }),
+/* 283 */,
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var W3CWebSocket = __webpack_require__(282);
-	var Observer = __webpack_require__(283);
-	var Subscription = __webpack_require__(285);
-	var logger = __webpack_require__(284);
-	var auth = __webpack_require__(287);
-	var objectAssign = __webpack_require__(286);
-	var CMap = __webpack_require__(293);
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.store = undefined;
+
+	var _redux = __webpack_require__(194);
+
+	var _reducers = __webpack_require__(285);
+
+	var createStoreWithMiddleware = (0, _redux.applyMiddleware)()(_redux.createStore);
+	var store = createStoreWithMiddleware(_reducers.rootReducer);
+
+	exports.store = store;
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _root = __webpack_require__(286);
+
+	Object.defineProperty(exports, 'rootReducer', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_root).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _redux = __webpack_require__(194);
+
+	var _chatReducer = __webpack_require__(287);
+
+	var _chatReducer2 = _interopRequireDefault(_chatReducer);
+
+	var _messageReducer = __webpack_require__(301);
+
+	var _messageReducer2 = _interopRequireDefault(_messageReducer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = (0, _redux.combineReducers)({
+		chat: _chatReducer2.default,
+		message: _messageReducer2.default
+	});
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var RTM = __webpack_require__(288);
+
+	var endpoint = 'wss://open-data.api.satori.com';
+	var appkey = '2E8A29cd03cB6A6f9Ea8cdc1b22DCbe0';
+	var role = 'lysis-chat';
+	var roleSecretKey = '2e77DE6959EF0FD8cb14F189dCBde17C';
+	var channel = 'lysis-chat';
+
+	var roleSecretProvider = RTM.roleSecretAuthProvider(role, roleSecretKey);
+
+	var rtm = new RTM(endpoint, appkey, {
+		authProvider: roleSecretProvider
+	});
+
+	var initialState = {
+		subscription: rtm.subscribe(channel, RTM.SubscriptionMode.SIMPLE),
+		channel: channel,
+		rtm: rtm
+	};
+
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+		var action = arguments[1];
+		return state;
+	};
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var W3CWebSocket = __webpack_require__(289);
+	var Observer = __webpack_require__(290);
+	var Subscription = __webpack_require__(292);
+	var logger = __webpack_require__(291);
+	var auth = __webpack_require__(294);
+	var objectAssign = __webpack_require__(293);
+	var CMap = __webpack_require__(300);
 
 	var RTM_VER = 'v2';
 	var STOPPED = 'stopped';
@@ -30918,7 +31055,7 @@
 
 
 /***/ }),
-/* 282 */
+/* 289 */
 /***/ (function(module, exports) {
 
 	var _global = (function () {
@@ -30934,10 +31071,10 @@
 
 
 /***/ }),
-/* 283 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var logger = __webpack_require__(284);
+	var logger = __webpack_require__(291);
 
 	/**
 	 * Creates an observer instance.
@@ -31030,7 +31167,7 @@
 
 
 /***/ }),
-/* 284 */
+/* 291 */
 /***/ (function(module, exports) {
 
 	/* eslint-disable no-console */
@@ -31063,11 +31200,11 @@
 
 
 /***/ }),
-/* 285 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Observer = __webpack_require__(283);
-	var objectAssign = __webpack_require__(286);
+	var Observer = __webpack_require__(290);
+	var objectAssign = __webpack_require__(293);
 
 	/**
 	 * Create a subscription instance.
@@ -31246,7 +31383,7 @@
 
 
 /***/ }),
-/* 286 */
+/* 293 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -31335,12 +31472,12 @@
 
 
 /***/ }),
-/* 287 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var hmac = __webpack_require__(288);
-	var base64 = __webpack_require__(292);
-	var objectAssign = __webpack_require__(286);
+	var hmac = __webpack_require__(295);
+	var base64 = __webpack_require__(299);
+	var objectAssign = __webpack_require__(293);
 
 	var AUTH_METHOD = 'role_secret';
 
@@ -31433,13 +31570,13 @@
 
 
 /***/ }),
-/* 288 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(289), __webpack_require__(290), __webpack_require__(291));
+			module.exports = exports = factory(__webpack_require__(296), __webpack_require__(297), __webpack_require__(298));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -31456,7 +31593,7 @@
 	}));
 
 /***/ }),
-/* 289 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
@@ -32203,13 +32340,13 @@
 	}));
 
 /***/ }),
-/* 290 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(289));
+			module.exports = exports = factory(__webpack_require__(296));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -32476,13 +32613,13 @@
 	}));
 
 /***/ }),
-/* 291 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(289));
+			module.exports = exports = factory(__webpack_require__(296));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -32624,13 +32761,13 @@
 	}));
 
 /***/ }),
-/* 292 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(289));
+			module.exports = exports = factory(__webpack_require__(296));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -32753,7 +32890,7 @@
 	}));
 
 /***/ }),
-/* 293 */
+/* 300 */
 /***/ (function(module, exports) {
 
 	var cMap;
@@ -32840,7 +32977,7 @@
 
 
 /***/ }),
-/* 294 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32849,157 +32986,27 @@
 		value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _types = __webpack_require__(282);
 
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(217);
+	var _types2 = _interopRequireDefault(_types);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var initialState = [];
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	exports.default = function () {
+		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+		var action = arguments[1];
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var RTM = __webpack_require__(281);
-
-	var endpoint = 'wss://open-data.api.satori.com';
-	var appkey = '2E8A29cd03cB6A6f9Ea8cdc1b22DCbe0';
-	var role = 'lysis-chat';
-	var roleSecretKey = '2e77DE6959EF0FD8cb14F189dCBde17C';
-	var channel = 'lysis-chat';
-
-	var roleSecretProvider = RTM.roleSecretAuthProvider(role, roleSecretKey);
-
-	var rtm = new RTM(endpoint, appkey, {
-		authProvider: roleSecretProvider
-	});
-
-	var subscription = void 0;
-
-	var DashPage = function (_Component) {
-		_inherits(DashPage, _Component);
-
-		function DashPage() {
-			_classCallCheck(this, DashPage);
-
-			return _possibleConstructorReturn(this, (DashPage.__proto__ || Object.getPrototypeOf(DashPage)).apply(this, arguments));
+		switch (action.type) {
+			case _types2.default.ADD_MESSAGE:
+				{
+					return state.concat(action.payload);
+				}
+			default:
+				return state;
 		}
-
-		_createClass(DashPage, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				subscription = rtm.subscribe(channel, RTM.SubscriptionMode.SIMPLE);
-				console.log('Subscribe', subscription);
-
-				/* publish a message after being subscribed to sync on subscription */
-				subscription.on('enter-subscribed', function () {
-					console.log('Joined the channel!');
-				});
-
-				/* set callback for PDU with specific action */
-				subscription.on('rtm/subscription/data', function (pdu) {
-					pdu.body.messages.forEach(function (msg) {
-						console.log(msg);
-					});
-				});
-				rtm.start();
-			}
-		}, {
-			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {
-				rtm.unsubscribe(subscription.subscriptionId);
-				rtm.stop();
-				console.log('Unmounting component!');
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'h1',
-						null,
-						'Dash Page'
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						_reactRouter.Link,
-						{ to: '/' },
-						'Go Home'
-					)
-				);
-			}
-		}]);
-
-		return DashPage;
-	}(_react.Component);
-
-	exports.default = DashPage;
-
-/***/ }),
-/* 295 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.store = undefined;
-
-	var _redux = __webpack_require__(194);
-
-	var _reducers = __webpack_require__(296);
-
-	var createStoreWithMiddleware = (0, _redux.applyMiddleware)()(_redux.createStore);
-	var store = createStoreWithMiddleware(_reducers.rootReducer);
-
-	exports.store = store;
-
-/***/ }),
-/* 296 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _root = __webpack_require__(297);
-
-	Object.defineProperty(exports, 'rootReducer', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_root).default;
-	  }
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-/* 297 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _redux = __webpack_require__(194);
-
-	exports.default = (0, _redux.combineReducers)({
-		state: function state() {
-			return null;
-		}
-	});
+	};
 
 /***/ })
 /******/ ]);

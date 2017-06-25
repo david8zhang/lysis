@@ -13,6 +13,10 @@ class HomePage extends Component {
 					title='Go To Chat' 
 					onPress={() => Actions.chat()}
 				/>
+				<Button
+					title='Create new chat'
+					onPress={() => Actions.new()}
+				/>
 			</View>
 		);
 	}

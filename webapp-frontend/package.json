@@ -12,6 +12,7 @@
   "author": "David Zhang",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/language": "^0.10.5",
     "@kadira/storybook": "^2.25.1",
     "async": "^2.0.0-rc.6",
     "autoprefixer": "^6.5.1",
