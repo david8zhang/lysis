@@ -32,6 +32,7 @@ class IndexPage extends Component {
 						}}
 					>
 						<OverlappingContainer
+							description="Most Common Word: 'Disillusioned'"
 							beforeAfter={false}
 						/>
 					</div>

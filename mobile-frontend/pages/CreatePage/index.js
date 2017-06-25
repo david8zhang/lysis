@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { View } from 'react-native';
+import * as actions from '../../actions';
 import { Navbar, Form } from '../../components';
 
 class CreatePage extends Component {
@@ -21,7 +23,15 @@ class CreatePage extends Component {
 			title: 'Create Chat',
 			backgroundColor: '#39AEF8',
 			onPress: (value) => {
-				Actions.home();
+				const { name, description } = value;
+				this.props.addRoom({
+					name,
+					description,
+					active: '1 Person Active',
+					img: 'https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png',
+					key: this.props.rooms.length
+				});
+				Actions.chatRooms();
 			}
 		}];
 		return (
@@ -33,4 +43,10 @@ class CreatePage extends Component {
 	}
 }
 
-export default CreatePage;
+const mapStateToProps = (state) => (
+	{
+		rooms: state.rooms
+	}
+);
+
+export default connect(mapStateToProps, actions)(CreatePage);

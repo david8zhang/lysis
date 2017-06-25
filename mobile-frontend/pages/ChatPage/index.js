@@ -5,8 +5,8 @@ import { GiftedChat } from 'react-native-gifted-chat';
 const uid = Date.now();
 
 const avatars = [
-	'http://data.whicdn.com/images/16682170/original.jpg',
-	'https://pbs.twimg.com/media/C-mpKTgU0AAnO8E.jpg'
+	'https://i.ytimg.com/vi/QsEj0CRWOFo/maxresdefault.jpg',
+	'http://www.pravoslavie.ru/sas/image/102326/232647.p.jpg?mtime=1459239680'
 ];
 
 const avatar = avatars[Math.floor(Math.random() * 2)];

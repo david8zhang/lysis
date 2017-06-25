@@ -29739,6 +29739,7 @@
 								}
 							},
 							_react2.default.createElement(_containers.OverlappingContainer, {
+								description: 'Most Common Word: \'Disillusioned\'',
 								beforeAfter: false
 							})
 						),
@@ -50264,6 +50265,11 @@
 					!this.props.beforeAfter && _react2.default.createElement(
 						'div',
 						{ className: '' + _styles2.default.potOverlap },
+						_react2.default.createElement(
+							'p',
+							{ style: { fontSize: '13px', textAlign: 'center' } },
+							this.props.description
+						),
 						_react2.default.createElement(_reactCircularProgressbar2.default, {
 							percentage: 23,
 							strokeWidth: 5

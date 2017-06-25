@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
 import { Tabs, Tab, Icon, Button } from 'react-native-elements';
@@ -7,21 +8,9 @@ import { Navbar } from '../../components';
 
 class ChatRoomsPage extends Component {
     renderRooms() {
-        rooms = [{
-                key: 0,
-                img: 'https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png',
-                description: 'Chat Room 1',
-                active: '3 People Active'
-            }, {
-                key: 1,
-                img: 'https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png',
-                description: 'Chat Room 2',
-                active: '3 People Active'
-            }];
-
-        const { roomViewStyle, descriptionStyle, activeStyle } = styles;
-        return rooms.map((room, index) => {
-            const { key, img,  description, active} = room;
+        const { roomViewStyle, descriptionStyle, activeStyle, titleStyle } = styles;
+        return this.props.rooms.map((room, index) => {
+            const { key, img,  description, active, name } = room;
             return (
                 <TouchableOpacity onPress={() => Actions.chat()} key={index}>
                     <View 
@@ -37,6 +26,9 @@ class ChatRoomsPage extends Component {
                                 padding:16,
                                 justifyContent:'center'
                             }}>
+                                <Text style={titleStyle}>
+                                    { name }
+                                </Text>
                                 <Text style={descriptionStyle}>
                                     {description}
                                 </Text>
@@ -76,13 +68,22 @@ const styles = {
         flexDirection:'row',
         justifyContent:'flex-start'
     },
-    descriptionStyle: {
+    titleStyle: {
         fontSize: 20
+    },
+    descriptionStyle: {
+        fontSize: 15
     },
     activeStyle: {
         fontSize: 10
     }
 }
 
-export default ChatRoomsPage;
+const mapStateToProps = (state) => (
+    {
+        rooms: state.rooms
+    }
+);
+
+export default connect(mapStateToProps, null)(ChatRoomsPage);
 /* eslint-enable */

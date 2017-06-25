@@ -37,6 +37,9 @@ class OverlappingContainer extends Component {
 				{
 					!this.props.beforeAfter &&
 					<div className={`${styles.potOverlap}`}>
+						<p style={{ fontSize: '13px', textAlign: 'center' }}>
+							{this.props.description}
+						</p>
 						<CircularProgressBar
 							percentage={23}
 							strokeWidth={5}

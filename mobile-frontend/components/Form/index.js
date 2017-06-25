@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View, ScrollView } from 'react-native';
 
 class Form extends Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ class Form extends Component {
 	}
 
 	renderInputs() {
-		const { inputLabel, inputField, textArea } = styles;
+		const { inputField, textArea } = styles;
 		return this.props.inputs.map((input) => {
 			const { 
 				key,
@@ -21,19 +21,16 @@ class Form extends Component {
 				numberOfLines
 			} = input;
 			return (
-				<View key={key}>
-					<Text style={inputLabel}>
-						{label}
-					</Text>
-					<TextInput
-						secureTextEntry={secureTextEntry}
-						style={multiline ? textArea : inputField}
-						value={this.state[key]}
-						multiline={multiline}
-						numberOfLines={numberOfLines}
-						onChangeText={(text) => this.setState({ [key]: text })}
-					/>
-				</View>
+				<TextInput
+					key={key}
+					placeholder={label}
+					secureTextEntry={secureTextEntry}
+					style={multiline ? textArea : inputField}
+					value={this.state[key]}
+					multiline={multiline}
+					numberOfLines={numberOfLines}
+					onChangeText={(text) => this.setState({ [key]: text })}
+				/>
 			);
 		});
 	}
@@ -56,12 +53,12 @@ class Form extends Component {
 
 	render() {
 		return (
-			<View>
+			<ScrollView>
 				{ this.renderInputs() }
 				<View>
 					{ this.renderHandlers() }
 				</View>
-			</View>
+			</ScrollView>
 		);
 	}
 }
@@ -90,6 +87,12 @@ const styles = {
 	},
 	buttonStyle: {
 		margin: 5
+	},
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		paddingHorizontal: 20,
+		paddingTop: 20,
 	}
 };
 
