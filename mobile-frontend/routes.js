@@ -1,10 +1,10 @@
 import React from 'react';
 import { Scene, Router } from 'react-native-router-flux';
-import { HomePage, ChatPage, CreatePage } from './pages';
+import { HomePage, ChatPage, CreatePage, ChatRoomsPage } from './pages';
 
 const RouterComponent = () => (
 	<Router hideNavBar>
-		<Scene 
+		<Scene
 			key='home'
 			component={HomePage}
 			style={sceneStyle}
@@ -12,6 +12,11 @@ const RouterComponent = () => (
 		<Scene
 			key='chat'
 			component={ChatPage}
+			style={sceneStyle}
+		/>
+		<Scene
+			key='chatRooms'
+			component={ChatRoomsPage}
 			style={sceneStyle}
 		/>
 		<Scene

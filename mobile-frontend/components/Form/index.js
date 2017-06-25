@@ -11,9 +11,15 @@ class Form extends Component {
 	}
 
 	renderInputs() {
-		const { inputLabel, inputField } = styles;
+		const { inputLabel, inputField, textArea } = styles;
 		return this.props.inputs.map((input) => {
-			const { key, label, secureTextEntry } = input;
+			const { 
+				key,
+				label,
+				secureTextEntry,
+				multiline,
+				numberOfLines
+			} = input;
 			return (
 				<View key={key}>
 					<Text style={inputLabel}>
@@ -21,8 +27,10 @@ class Form extends Component {
 					</Text>
 					<TextInput
 						secureTextEntry={secureTextEntry}
-						style={inputField}
+						style={multiline ? textArea : inputField}
 						value={this.state[key]}
+						multiline={multiline}
+						numberOfLines={numberOfLines}
 						onChangeText={(text) => this.setState({ [key]: text })}
 					/>
 				</View>
@@ -40,7 +48,7 @@ class Form extends Component {
 					buttonStyle={buttonStyle}
 					backgroundColor={backgroundColor}
 					title={title}
-					onPress={onPress}
+					onPress={() => onPress(this.state)}
 				/>
 			);
 		});
@@ -73,6 +81,12 @@ const styles = {
 		marginRight: 20,
 		paddingLeft: 5,
 		paddingRight: 5
+	},
+	textArea: {
+		paddingTop: 20,
+		paddingBottom: 20,
+		marginLeft: 25,
+		marginRight: 25
 	},
 	buttonStyle: {
 		margin: 5
