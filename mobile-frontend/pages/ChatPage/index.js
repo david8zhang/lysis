@@ -6,10 +6,11 @@ const uid = Date.now();
 
 const avatars = [
 	'https://i.ytimg.com/vi/QsEj0CRWOFo/maxresdefault.jpg',
-	'http://www.pravoslavie.ru/sas/image/102326/232647.p.jpg?mtime=1459239680'
+	'http://www.pravoslavie.ru/sas/image/102326/232647.p.jpg?mtime=1459239680',
+	'https://pbs.twimg.com/profile_images/457662750244630529/zJ1pJn-3.jpeg'
 ];
 
-const avatar = avatars[Math.floor(Math.random() * 2)];
+const avatar = avatars[Math.floor(Math.random() * avatars.length)];
 
 class ChatPage extends Component {
 	constructor(props) {

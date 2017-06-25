@@ -63,7 +63,7 @@ class ActivityContainer extends Component {
 					hasPadding
 					style={{ width: '100%' }}
 				>
-					<div style={{ height: '200px', overflowY: 'scroll' }}>
+					<div style={{ height: '100px', overflowY: 'scroll' }}>
 						{ this.appendMessages() }
 						<div 
 							style={{ float:'left', clear: 'both' }}

@@ -1,9 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import CircularProgressBar from 'react-circular-progressbar';
 import { Panel } from '../../../components';
 import styles from './styles.css';
 
+const words = [
+	'Disillusioned',
+	'Depressed',
+	'Isolated',
+	'Lonely'
+];
+
 class OverlappingContainer extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			percentage: 23
+		};
+	}
+	componentDidMount() {
+		const { subscription } = this.props.chat;
+
+		/* publish a message after being subscribed to sync on subscription */
+		subscription.on('enter-subscribed', () => {
+			console.log('Joined the channel!');
+		});
+
+		/* set callback for PDU with specific action */
+		subscription.on('rtm/subscription/data', (pdu) => {
+			pdu.body.messages.forEach((msg) => {
+				console.log('Message', msg);
+				this.setState({
+					percentage: Math.floor(Math.random() * 34)
+				});
+			});
+		});
+	}
+
 	render() {
 		return (
 			<Panel
@@ -38,10 +71,10 @@ class OverlappingContainer extends Component {
 					!this.props.beforeAfter &&
 					<div className={`${styles.potOverlap}`}>
 						<p style={{ fontSize: '13px', textAlign: 'center' }}>
-							{this.props.description}
+							{`The most common word: ${words[Math.floor(Math.random() * words.length)]}`}
 						</p>
 						<CircularProgressBar
-							percentage={23}
+							percentage={this.state.percentage}
 							strokeWidth={5}
 						/>
 					</div>
@@ -55,4 +88,10 @@ OverlappingContainer.defaultProps = {
 	beforeAfter: true
 };
 
-export default OverlappingContainer;
+const mapStateToProps = (state) => (
+	{
+		chat: state.chat
+	}
+);
+
+export default connect(mapStateToProps, null)(OverlappingContainer);

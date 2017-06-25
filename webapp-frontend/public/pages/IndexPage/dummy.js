@@ -3,7 +3,20 @@ export const options = {
         backgroundColor: '#ffffff',
         type: 'spline',
         height: 270,
-        margin: [80, 80, 80, 80]
+        margin: [80, 80, 80, 80],
+        events: {
+            load: function () {
+                var y = Math.log(19)
+                // set up the updating of the chart each second
+                var series = this.series;
+                setInterval(() => {
+                    var x = (new Date()).getTime(), // current time
+                        y = Math.random()
+                    var dataSeries = series[0]
+                    dataSeries.addPoint([x, y], true, true);
+                }, 1000);
+            }
+        }
     },
     title: {
         text: null
@@ -73,10 +86,10 @@ export const options = {
                 time = (new Date()).getTime(),
                 i;
 
-            for (i = -15; i <= 30; i += 1) {
+            for (i = -15; i <= 0; i += 1) {
                 data.push({
                     x: time + i * 1000,
-                    y: Math.random() * 100
+                    y: Math.tanh(Math.random())
                 });
             }
             return data;

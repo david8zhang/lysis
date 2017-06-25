@@ -69,7 +69,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _store = __webpack_require__(334);
+	var _store = __webpack_require__(335);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29691,7 +29691,7 @@
 
 	var _components = __webpack_require__(283);
 
-	var _dummy = __webpack_require__(333);
+	var _dummy = __webpack_require__(334);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29889,7 +29889,7 @@
 	  }
 	});
 
-	var _ActivityContainer = __webpack_require__(353);
+	var _ActivityContainer = __webpack_require__(333);
 
 	Object.defineProperty(exports, 'ActivityContainer', {
 	  enumerable: true,
@@ -50191,6 +50191,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(185);
+
 	var _reactCircularProgressbar = __webpack_require__(330);
 
 	var _reactCircularProgressbar2 = _interopRequireDefault(_reactCircularProgressbar);
@@ -50209,16 +50211,46 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var words = ['Disillusioned', 'Depressed', 'Isolated', 'Lonely'];
+
 	var OverlappingContainer = function (_Component) {
 		_inherits(OverlappingContainer, _Component);
 
-		function OverlappingContainer() {
+		function OverlappingContainer(props) {
 			_classCallCheck(this, OverlappingContainer);
 
-			return _possibleConstructorReturn(this, (OverlappingContainer.__proto__ || Object.getPrototypeOf(OverlappingContainer)).apply(this, arguments));
+			var _this = _possibleConstructorReturn(this, (OverlappingContainer.__proto__ || Object.getPrototypeOf(OverlappingContainer)).call(this, props));
+
+			_this.state = {
+				percentage: 23
+			};
+			return _this;
 		}
 
 		_createClass(OverlappingContainer, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				var subscription = this.props.chat.subscription;
+
+				/* publish a message after being subscribed to sync on subscription */
+
+				subscription.on('enter-subscribed', function () {
+					console.log('Joined the channel!');
+				});
+
+				/* set callback for PDU with specific action */
+				subscription.on('rtm/subscription/data', function (pdu) {
+					pdu.body.messages.forEach(function (msg) {
+						console.log('Message', msg);
+						_this2.setState({
+							percentage: Math.floor(Math.random() * 34)
+						});
+					});
+				});
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -50268,10 +50300,10 @@
 						_react2.default.createElement(
 							'p',
 							{ style: { fontSize: '13px', textAlign: 'center' } },
-							this.props.description
+							'The most common word: ' + words[Math.floor(Math.random() * words.length)]
 						),
 						_react2.default.createElement(_reactCircularProgressbar2.default, {
-							percentage: 23,
+							percentage: this.state.percentage,
 							strokeWidth: 5
 						})
 					)
@@ -50286,7 +50318,13 @@
 		beforeAfter: true
 	};
 
-	exports.default = OverlappingContainer;
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			chat: state.chat
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(OverlappingContainer);
 
 /***/ }),
 /* 330 */
@@ -50359,6 +50397,154 @@
 
 /***/ }),
 /* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(38);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _reactRedux = __webpack_require__(185);
+
+	var _components = __webpack_require__(283);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ActivityContainer = function (_Component) {
+		_inherits(ActivityContainer, _Component);
+
+		function ActivityContainer(props) {
+			_classCallCheck(this, ActivityContainer);
+
+			var _this = _possibleConstructorReturn(this, (ActivityContainer.__proto__ || Object.getPrototypeOf(ActivityContainer)).call(this, props));
+
+			_this.state = { messages: [] };
+			return _this;
+		}
+
+		_createClass(ActivityContainer, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				var _props$chat = this.props.chat,
+				    subscription = _props$chat.subscription,
+				    rtm = _props$chat.rtm;
+
+				/* publish a message after being subscribed to sync on subscription */
+
+				subscription.on('enter-subscribed', function () {
+					console.log('Joined the channel!');
+				});
+
+				/* set callback for PDU with specific action */
+				subscription.on('rtm/subscription/data', function (pdu) {
+					pdu.body.messages.forEach(function (msg) {
+						_this2.setState(function (previousState) {
+							return {
+								messages: previousState.messages.concat(msg)
+							};
+						});
+						_this2.scrollToBottom();
+					});
+				});
+				rtm.start();
+			}
+		}, {
+			key: 'componentDidUpdate',
+			value: function componentDidUpdate() {
+				this.scrollToBottom();
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				var _props$chat2 = this.props.chat,
+				    subscription = _props$chat2.subscription,
+				    rtm = _props$chat2.rtm;
+
+				rtm.unsubscribe(subscription.subscriptionId);
+				rtm.stop();
+				console.log('Unmounting component!');
+			}
+		}, {
+			key: 'appendMessages',
+			value: function appendMessages() {
+				return this.state.messages.map(function (message) {
+					return _react2.default.createElement(
+						'p',
+						{ style: { marginLeft: '30px' } },
+						message
+					);
+				});
+			}
+		}, {
+			key: 'scrollToBottom',
+			value: function scrollToBottom() {
+				var node = _reactDom2.default.findDOMNode(this.messagesEnd);
+				node.scrollIntoView({ behavior: 'smooth' });
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this3 = this;
+
+				return _react2.default.createElement(
+					'div',
+					{ style: { display: 'flex', justifyContent: 'center', padding: '30px' } },
+					_react2.default.createElement(
+						_components.Panel,
+						{
+							title: 'Live Message Stream',
+							hasPadding: true,
+							style: { width: '100%' }
+						},
+						_react2.default.createElement(
+							'div',
+							{ style: { height: '100px', overflowY: 'scroll' } },
+							this.appendMessages(),
+							_react2.default.createElement('div', {
+								style: { float: 'left', clear: 'both' },
+								ref: function ref(el) {
+									_this3.messagesEnd = el;
+								}
+							})
+						)
+					)
+				);
+			}
+		}]);
+
+		return ActivityContainer;
+	}(_react.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			chat: state.chat,
+			message: state.message
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(ActivityContainer);
+
+/***/ }),
+/* 334 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50371,7 +50557,21 @@
 	        backgroundColor: '#ffffff',
 	        type: 'spline',
 	        height: 270,
-	        margin: [80, 80, 80, 80]
+	        margin: [80, 80, 80, 80],
+	        events: {
+	            load: function load() {
+	                var y = Math.log(19);
+	                // set up the updating of the chart each second
+	                var series = this.series;
+	                setInterval(function () {
+	                    var x = new Date().getTime(),
+	                        // current time
+	                    y = Math.random();
+	                    var dataSeries = series[0];
+	                    dataSeries.addPoint([x, y], true, true);
+	                }, 1000);
+	            }
+	        }
 	    },
 	    title: {
 	        text: null
@@ -50436,10 +50636,10 @@
 	                time = new Date().getTime(),
 	                i;
 
-	            for (i = -15; i <= 30; i += 1) {
+	            for (i = -15; i <= 0; i += 1) {
 	                data.push({
 	                    x: time + i * 1000,
-	                    y: Math.random() * 100
+	                    y: Math.tanh(Math.random())
 	                });
 	            }
 	            return data;
@@ -50451,7 +50651,7 @@
 	};
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50463,7 +50663,7 @@
 
 	var _redux = __webpack_require__(194);
 
-	var _reducers = __webpack_require__(335);
+	var _reducers = __webpack_require__(336);
 
 	var createStoreWithMiddleware = (0, _redux.applyMiddleware)()(_redux.createStore);
 	var store = createStoreWithMiddleware(_reducers.rootReducer);
@@ -50471,7 +50671,7 @@
 	exports.store = store;
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50480,7 +50680,7 @@
 	  value: true
 	});
 
-	var _root = __webpack_require__(336);
+	var _root = __webpack_require__(337);
 
 	Object.defineProperty(exports, 'rootReducer', {
 	  enumerable: true,
@@ -50492,7 +50692,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50503,11 +50703,11 @@
 
 	var _redux = __webpack_require__(194);
 
-	var _chatReducer = __webpack_require__(337);
+	var _chatReducer = __webpack_require__(338);
 
 	var _chatReducer2 = _interopRequireDefault(_chatReducer);
 
-	var _messageReducer = __webpack_require__(351);
+	var _messageReducer = __webpack_require__(352);
 
 	var _messageReducer2 = _interopRequireDefault(_messageReducer);
 
@@ -50519,7 +50719,7 @@
 	});
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50527,7 +50727,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var RTM = __webpack_require__(338);
+	var RTM = __webpack_require__(339);
 
 	var endpoint = 'wss://open-data.api.satori.com';
 	var appkey = '2E8A29cd03cB6A6f9Ea8cdc1b22DCbe0';
@@ -50554,16 +50754,16 @@
 	};
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var W3CWebSocket = __webpack_require__(339);
-	var Observer = __webpack_require__(340);
-	var Subscription = __webpack_require__(342);
-	var logger = __webpack_require__(341);
-	var auth = __webpack_require__(344);
-	var objectAssign = __webpack_require__(343);
-	var CMap = __webpack_require__(350);
+	var W3CWebSocket = __webpack_require__(340);
+	var Observer = __webpack_require__(341);
+	var Subscription = __webpack_require__(343);
+	var logger = __webpack_require__(342);
+	var auth = __webpack_require__(345);
+	var objectAssign = __webpack_require__(344);
+	var CMap = __webpack_require__(351);
 
 	var RTM_VER = 'v2';
 	var STOPPED = 'stopped';
@@ -51729,7 +51929,7 @@
 
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports) {
 
 	var _global = (function () {
@@ -51745,10 +51945,10 @@
 
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var logger = __webpack_require__(341);
+	var logger = __webpack_require__(342);
 
 	/**
 	 * Creates an observer instance.
@@ -51841,7 +52041,7 @@
 
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, exports) {
 
 	/* eslint-disable no-console */
@@ -51874,11 +52074,11 @@
 
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Observer = __webpack_require__(340);
-	var objectAssign = __webpack_require__(343);
+	var Observer = __webpack_require__(341);
+	var objectAssign = __webpack_require__(344);
 
 	/**
 	 * Create a subscription instance.
@@ -52057,7 +52257,7 @@
 
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -52146,12 +52346,12 @@
 
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var hmac = __webpack_require__(345);
-	var base64 = __webpack_require__(349);
-	var objectAssign = __webpack_require__(343);
+	var hmac = __webpack_require__(346);
+	var base64 = __webpack_require__(350);
+	var objectAssign = __webpack_require__(344);
 
 	var AUTH_METHOD = 'role_secret';
 
@@ -52244,13 +52444,13 @@
 
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory, undef) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(346), __webpack_require__(347), __webpack_require__(348));
+			module.exports = exports = factory(__webpack_require__(347), __webpack_require__(348), __webpack_require__(349));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -52267,7 +52467,7 @@
 	}));
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
@@ -53014,13 +53214,13 @@
 	}));
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(346));
+			module.exports = exports = factory(__webpack_require__(347));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -53287,13 +53487,13 @@
 	}));
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(346));
+			module.exports = exports = factory(__webpack_require__(347));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -53435,13 +53635,13 @@
 	}));
 
 /***/ }),
-/* 349 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	;(function (root, factory) {
 		if (true) {
 			// CommonJS
-			module.exports = exports = factory(__webpack_require__(346));
+			module.exports = exports = factory(__webpack_require__(347));
 		}
 		else if (typeof define === "function" && define.amd) {
 			// AMD
@@ -53564,7 +53764,7 @@
 	}));
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, exports) {
 
 	var cMap;
@@ -53651,7 +53851,7 @@
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53660,7 +53860,7 @@
 		value: true
 	});
 
-	var _types = __webpack_require__(352);
+	var _types = __webpack_require__(353);
 
 	var _types2 = _interopRequireDefault(_types);
 
@@ -53683,158 +53883,10 @@
 	};
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, exports) {
 
 	"use strict";
-
-/***/ }),
-/* 353 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(38);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _reactRedux = __webpack_require__(185);
-
-	var _components = __webpack_require__(283);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ActivityContainer = function (_Component) {
-		_inherits(ActivityContainer, _Component);
-
-		function ActivityContainer(props) {
-			_classCallCheck(this, ActivityContainer);
-
-			var _this = _possibleConstructorReturn(this, (ActivityContainer.__proto__ || Object.getPrototypeOf(ActivityContainer)).call(this, props));
-
-			_this.state = { messages: [] };
-			return _this;
-		}
-
-		_createClass(ActivityContainer, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				var _this2 = this;
-
-				var _props$chat = this.props.chat,
-				    subscription = _props$chat.subscription,
-				    rtm = _props$chat.rtm;
-
-				/* publish a message after being subscribed to sync on subscription */
-
-				subscription.on('enter-subscribed', function () {
-					console.log('Joined the channel!');
-				});
-
-				/* set callback for PDU with specific action */
-				subscription.on('rtm/subscription/data', function (pdu) {
-					pdu.body.messages.forEach(function (msg) {
-						_this2.setState(function (previousState) {
-							return {
-								messages: previousState.messages.concat(msg)
-							};
-						});
-						_this2.scrollToBottom();
-					});
-				});
-				rtm.start();
-			}
-		}, {
-			key: 'componentDidUpdate',
-			value: function componentDidUpdate() {
-				this.scrollToBottom();
-			}
-		}, {
-			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {
-				var _props$chat2 = this.props.chat,
-				    subscription = _props$chat2.subscription,
-				    rtm = _props$chat2.rtm;
-
-				rtm.unsubscribe(subscription.subscriptionId);
-				rtm.stop();
-				console.log('Unmounting component!');
-			}
-		}, {
-			key: 'appendMessages',
-			value: function appendMessages() {
-				return this.state.messages.map(function (message) {
-					return _react2.default.createElement(
-						'p',
-						{ style: { marginLeft: '30px' } },
-						message
-					);
-				});
-			}
-		}, {
-			key: 'scrollToBottom',
-			value: function scrollToBottom() {
-				var node = _reactDom2.default.findDOMNode(this.messagesEnd);
-				node.scrollIntoView({ behavior: 'smooth' });
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this3 = this;
-
-				return _react2.default.createElement(
-					'div',
-					{ style: { display: 'flex', justifyContent: 'center', padding: '30px' } },
-					_react2.default.createElement(
-						_components.Panel,
-						{
-							title: 'Live Message Stream',
-							hasPadding: true,
-							style: { width: '100%' }
-						},
-						_react2.default.createElement(
-							'div',
-							{ style: { height: '200px', overflowY: 'scroll' } },
-							this.appendMessages(),
-							_react2.default.createElement('div', {
-								style: { float: 'left', clear: 'both' },
-								ref: function ref(el) {
-									_this3.messagesEnd = el;
-								}
-							})
-						)
-					)
-				);
-			}
-		}]);
-
-		return ActivityContainer;
-	}(_react.Component);
-
-	var mapStateToProps = function mapStateToProps(state) {
-		return {
-			chat: state.chat,
-			message: state.message
-		};
-	};
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(ActivityContainer);
 
 /***/ })
 /******/ ]);
